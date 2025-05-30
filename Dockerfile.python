@@ -1,0 +1,8 @@
+FROM python:3.13
+LABEL maintainer="My Name"
+LABEL description="Sample Dockerfile for a simple Python container"
+# copy necessary files
+COPY ./content /app
+# Set the working directory
+WORKDIR /app
+CMD ["python", "app.py"]

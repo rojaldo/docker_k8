@@ -1,0 +1,10 @@
+FROM python:3.13
+LABEL maintainer="My Name"
+LABEL description="Sample Dockerfile for a simple Python container"
+EXPOSE 5000
+# copy necessary files
+COPY ./content /app
+# Set the working directory
+WORKDIR /app
+RUN pip install --no-cache-dir -r requirements.txt
+CMD ["python", "app.py"]

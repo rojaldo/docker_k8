@@ -1,0 +1,13 @@
+FROM --platform=x86_64 ubuntu:25.04
+LABEL maintainer="My Name"
+LABEL description="Sample Dockerfile for a simple Ubuntu container"
+# Install necessary packages
+RUN apt update && \
+    apt install -y \
+    figlet \
+    rm -rf /var/lib/apt/lists/*
+
+# Set the working directory
+WORKDIR /app
+# run figlet to display a message
+CMD figlet "Hello, Docker!"

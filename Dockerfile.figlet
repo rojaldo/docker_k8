@@ -1,0 +1,19 @@
+FROM --platform=x86_64 alpine:3.21.3
+LABEL maintainer="My Name"
+LABEL description="Sample Dockerfile for a simple Alpine container"
+# Install necessary packages
+RUN apk update && \
+    apk add --no-cache figlet && \
+    rm -rf /var/cache/apk/*
+
+# Install bin/bash for compatibility
+RUN apk add --no-cache bash
+# Set the working directory
+
+COPY ./content /app
+
+WORKDIR /app
+# run figlet to display a message
+ENTRYPOINT ["figlet"]
+CMD ["Hello, Docker!"]
+
