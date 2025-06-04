@@ -1,0 +1,35 @@
+
+services:
+  fastapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - myvolume:/app
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://user:password@db/mydatabase
+    networks:
+      - backend
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    networks:
+      - backend
+volumes:
+  myvolume:
+  dbdata:
+networks:
+  backend:
+    driver: bridge
+    

@@ -1,0 +1,25 @@
+FROM --platform=x86_64 ubuntu:25.04
+LABEL maintainer="My Name"
+LABEL description="Sample Dockerfile for a simple Python container"
+
+# install necessary packages to run figlet
+RUN apt-get update && \
+    apt-get install -y figlet && \
+    rm -rf /var/lib/apt/lists/*
+
+ENV FIGLET_FONT=standard
+ENV MESSAGE="Hello, World!"
+ARG FIGLET_FONT=standard
+
+ONBUILD RUN rm -rf /app
+
+COPY ./content /app
+VOLUME /app
+
+# create a user to run the command
+RUN useradd -ms /bin/bash figletuser && \
+    chown -R figletuser:figletuser /app
+
+USER figletuser
+
+CMD figlet -f $FIGLET_FONT "$MESSAGE"

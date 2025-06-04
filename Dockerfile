@@ -1,23 +1,15 @@
-FROM gcc:14.3.0 as compiler
-
-# copy the C source code
-COPY ./content/sample.c /app/sample.c
-# Set the working directory
-WORKDIR /app
-# compile the C source code
-RUN gcc -o sample sample.c 
-
-FROM --platform=x86_64 alpine:3.21.3
+FROM --platform=x86_64 ubuntu:25.04
 LABEL maintainer="My Name"
-LABEL description="Sample Dockerfile for a simple Alpine container"
-# Install necessary packages to run C app
-RUN apk update && \
-    apk add --no-cache libc6-compat && \
-    rm -rf /var/cache/apk/*
+LABEL description="Sample Dockerfile for a simple Python container"
+EXPOSE 8000
+# Install necessary packages to run Python and git
+RUN apt-get update && \
+    apt-get install -y python3 python3-pip git && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p /app
-COPY --from=compiler /app/sample /app/sample
+# clone the repository
+RUN git clone https://github.com/macagua/example.fastapi.helloworld.git app
 # Set the working directory
 WORKDIR /app
-# run C app to display a message
-CMD ["./sample"]
+RUN pip3 install --break-system-packages --no-cache-dir -r requirements.txt
+CMD fastapi run main.py
